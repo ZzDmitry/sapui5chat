@@ -26,6 +26,12 @@ http.listen(8001, () => {
   console.log('Express server is listening on 8001');
 });
 
-io.on('connection', () => {
+io.on('connection', (socket) => {
   console.log('a user connected');
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+  socket.on('chat message', (msg) => {
+    console.log('message: ', msg);
+  });
 });
