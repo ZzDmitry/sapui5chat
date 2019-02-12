@@ -42,7 +42,7 @@
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
   $(function () {
-    var socket = io({ path: '/sapui5chat/socket.io' });
+    var socket = io('https://nsk.execution.su:8443', { path: '/sapui5chat/socket.io' });
     $('form').submit(function(e){
       e.preventDefault(); // prevents page reloading
       socket.emit('chat message', $('#m').val());
