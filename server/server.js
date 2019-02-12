@@ -23,6 +23,11 @@ app.get('/chat.html', (req, res) => {
   sendClientFile(res, 'chat.html');
 });
 
+app.get('/example.html', (req, res) => {
+  console.log('get chat.html');
+  sendClientFile(res, 'example.html');
+});
+
 app.get('/chat-template.html', (req, res) => {
   console.log('get chat-template.html');
   fs.readFile('../client/chat.html', 'utf8', (err, text) => {
