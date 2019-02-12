@@ -39,25 +39,37 @@ function insertScriptsAsync(scripts, target, callback) {
   });
 }
 
-
-const req = new XMLHttpRequest();
-req.open('GET', 'https://nsk.execution.su:8443/sapui5chat/chat-template.html', true);
-req.onreadystatechange = () => {
-  if (req.readyState === 4) {
-    if (req.status === 200) {
-      const body = document.getElementsByTagName('body')[0];
-      const chatContainerElement = document.createElement('div');
-      chatContainerElement.innerHTML = req.responseText;
-      const chatElement = chatContainerElement.firstElementChild;
-
-      const allScripts = getAllScripts(chatElement);
-      insertScriptsAsync(allScripts, chatElement, () => {
-        console.log('done');
-      });
-      body.appendChild(chatElement);
-    } else {
-      console.log('Error loading page\n');
+function xhrGet(url, callback) {
+  const req = new XMLHttpRequest();
+  req.open('GET', url, true);
+  req.onreadystatechange = () => {
+    if (req.readyState === 4) {
+      if (req.status === 200) {
+        callback(null, req);
+      } else {
+        callback(new Error('XMLHttpRequest error'));
+      }
     }
-  }
-};
-req.send(null);
+  };
+  req.send(null);
+}
+
+xhrGet(
+  'https://nsk.execution.su:8443/sapui5chat/chat-template.html',
+  (err, req) => {
+    if (err) {
+      console.error('Error loading page\n');
+      return;
+    }
+    const body = document.getElementsByTagName('body')[0];
+    const chatContainerElement = document.createElement('div');
+    chatContainerElement.innerHTML = req.responseText;
+    const chatElement = chatContainerElement.firstElementChild;
+
+    const allScripts = getAllScripts(chatElement);
+    insertScriptsAsync(allScripts, chatElement, () => {
+      console.log('sapui5chat inject done');
+    });
+    body.appendChild(chatElement);
+  },
+);
