@@ -9,6 +9,11 @@ app.get('/script.js', (req, res) => {
   res.sendFile('script.js', { root: '../client/' });
 });
 
+app.get('/chat.html', (req, res) => {
+  console.log('get chat.html');
+  res.sendFile('chat.html', { root: '../client/' });
+});
+
 app.listen(8001, () => {
   console.log('Express server is listening on 8001');
 });
