@@ -1,8 +1,7 @@
 /* eslint-disable no-console */
-const express = require('express');
-
-
-const app = express();
+const app = require('express')();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 
 function sendClientFile(res, filename) {
   res.sendFile(
@@ -23,6 +22,18 @@ app.get('/chat.html', (req, res) => {
   sendClientFile(res, 'chat.html');
 });
 
-app.listen(8001, () => {
+// app.get('/socket.io/socket.io.js', (req, res) => {
+//   console.log('get socket.io');
+//   res.sendFile(
+//     'socket.io.js',
+//     { root: './node_modules/socket.io-client/dist/' },
+//   );
+// });
+
+http.listen(8001, () => {
   console.log('Express server is listening on 8001');
+});
+
+io.on('connection', () => {
+  console.log('a user connected');
 });
