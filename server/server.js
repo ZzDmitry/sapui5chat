@@ -22,14 +22,6 @@ app.get('/chat.html', (req, res) => {
   sendClientFile(res, 'chat.html');
 });
 
-// app.get('/socket.io/socket.io.js', (req, res) => {
-//   console.log('get socket.io');
-//   res.sendFile(
-//     'socket.io.js',
-//     { root: './node_modules/socket.io-client/dist/' },
-//   );
-// });
-
 http.listen(8001, () => {
   console.log('Express server is listening on 8001');
 });
