@@ -42,13 +42,11 @@
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
   $(function () {
-    xhrGet(
+    $.ajax(
       '/sap/bc/ui2/start_up',
-      (err, req) => {
-        if (err) {
-          console.error('Get user info error', err);
-        }
-        const oUserData = JSON.parse(req.responseText);
+      { dataType: 'json' },
+    )
+      .done((oUserData) => {
         console.log('oUserData', oUserData);
         var socket = io('https://nsk.execution.su:8443', { path: '/sapui5chat/socket.io' });
         $('form').submit(function(e){
@@ -63,8 +61,10 @@
           $newElement.text(msg);
           $newElement[0].scrollIntoView();
         });
-      },
-    );
+      })
+      .error((err) => {
+        console.error('Get user info error', JSON.stringify(err));
+      });
   });
 </script>
 </div>
