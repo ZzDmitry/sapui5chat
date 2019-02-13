@@ -71,6 +71,17 @@ io.on('connection', (socket) => {
   });
   socket.on('chat message', (msg) => {
     console.log('message: ', msg);
-    io.emit('chat message', msg);
+    const { user, text } = msg;
+    if (!user || !text) {
+      return;
+    }
+    io.emit(
+      'chat message',
+      {
+        username: user.fullName,
+        time: +new Date(),
+        text,
+      },
+    );
   });
 });

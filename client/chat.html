@@ -51,14 +51,28 @@
         var socket = io('https://nsk.execution.su:8443', { path: '/sapui5chat/socket.io' });
         $('form').submit(function(e){
           e.preventDefault(); // prevents page reloading
-          socket.emit('chat message', `${oUserData.fullName}: ${$('#m').val()}`);
+          socket.emit(
+            'chat message',
+            {
+              user: oUserData,
+              text: $('#m').val(),
+            }
+          );
           $('#m').val('');
           return false;
         });
         socket.on('chat message', function(msg){
+          console.log('msg', msg);
+          if (!msg) {
+            return;
+          }
+          const { username, time, text } = msg;
+          if (!username ||!time || !text) {
+            return;
+          }
           const $newElement = $('<li>');
           $('#messages').append($newElement);
-          $newElement.text(msg);
+          $newElement.text(`${new Date(time).toLocaleTimeString('ru-RU')} ${username}: ${text}`);
           $newElement[0].scrollIntoView();
         });
       })
