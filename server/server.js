@@ -64,6 +64,8 @@ http.listen(8001, () => {
   console.log('Express server is listening on 8001');
 });
 
+const sentMessages = [];
+
 io.on('connection', (socket) => {
   console.log('a user connected');
   socket.on('disconnect', () => {
@@ -75,13 +77,12 @@ io.on('connection', (socket) => {
     if (!user || !text) {
       return;
     }
-    io.emit(
-      'chat message',
-      {
-        username: user.fullName,
-        time: +new Date(),
-        text,
-      },
-    );
+    const sentMessage = {
+      username: user.fullName,
+      time: +new Date(),
+      text,
+    };
+    io.emit('chat message', sentMessage);
+    sentMessages.push(sentMessage);
   });
 });
