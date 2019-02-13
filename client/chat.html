@@ -61,11 +61,8 @@
           $('#m').val('');
           return false;
         });
-        socket.on('chat message', function(msg){
-          console.log('msg', msg);
-          if (!msg) {
-            return;
-          }
+
+        function showMessage(msg) {
           const { username, time, text } = msg;
           if (!username ||!time || !text) {
             return;
@@ -74,6 +71,14 @@
           $('#messages').append($newElement);
           $newElement.text(`${new Date(time).toLocaleTimeString('ru-RU')} ${username}: ${text}`);
           $newElement[0].scrollIntoView();
+        }
+
+        socket.on('chat message', function(msg){
+          console.log('msg', msg);
+          if (!msg) {
+            return;
+          }
+          showMessage(msg);
         });
       })
       .error((err) => {
