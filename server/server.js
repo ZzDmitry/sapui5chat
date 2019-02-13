@@ -68,6 +68,7 @@ const sentMessages = [];
 
 io.on('connection', (socket) => {
   console.log('a user connected');
+  socket.emit('chat messages', sentMessages.slice(-10));
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });

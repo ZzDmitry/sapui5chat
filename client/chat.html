@@ -80,6 +80,12 @@
           }
           showMessage(msg);
         });
+        socket.on('chat messages', function(msgArr) {
+          if (!msgArr || !msgArr.forEach) {
+            return;
+          }
+          msgArr.forEach(showMessage)
+        });
       })
       .error((err) => {
         console.error('Get user info error', JSON.stringify(err));
